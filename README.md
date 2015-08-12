@@ -2,7 +2,7 @@
 
 Dockerized extract-xiso: the Xbox iso extractor tool.
 
-extract-xiso sources are available on [SourceForge](http://sourceforge.net/projects/extract-xiso/).
+extract-xiso sources are available on [SourceForge](https://sourceforge.net/projects/extract-xiso/).
 
 ## How to use it?
 
