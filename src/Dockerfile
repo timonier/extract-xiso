@@ -1,13 +1,12 @@
 FROM debian:jessie
 MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
 
-COPY extract-xiso-2.7.1.tar.gz /tmp/extract-xiso-2.7.1.tar.gz
+ADD extract-xiso.tar.gz /tmp
 
 RUN set -x \
-    && BUILD_DEPS='build-essential' \
+    && BUILD_DEPS="build-essential" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $BUILD_DEPS \
-    && tar xvzf /tmp/extract-xiso-2.7.1.tar.gz -C /tmp \
     && cd /tmp/extract-xiso \
     && make \
     && mv extract-xiso /usr/local/bin/extract-xiso \
