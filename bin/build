@@ -1,9 +1,4 @@
 #!/bin/bash
-set -e
 cd "`dirname "$0"`/../src"
 
-[[ -z $IMAGE ]] && IMAGE="mauchede/extract-xiso"
-[[ -z $TAG ]] && TAG="2.7.1"
-
-docker rmi $IMAGE:$TAG || :
-docker build -t $IMAGE:$TAG .
+docker build -t ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} .

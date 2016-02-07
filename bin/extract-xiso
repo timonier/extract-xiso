@@ -1,16 +1,18 @@
 #!/bin/bash
-set -e
 
-[[ -z $IMAGE ]] && IMAGE="mauchede/extract-xiso"
-[[ -z $TAG ]] && TAG="2.7.1"
+USER=$(/usr/bin/id -nu)
+HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
+PWD=$(/bin/pwd)
 
 docker run \
-    --rm \
+    -i \
+    -t=$([[ -t 0 ]] && echo "true" || echo "false") \
+    -u "$USER" \
     -v /etc/group:/etc/group:ro \
     -v /etc/passwd:/etc/passwd:ro \
     -v /etc/localtime:/etc/localtime:ro \
     -v "$HOME:$HOME" \
     -v "$PWD:$PWD" \
-    -u $USER \
     -w "$PWD" \
-    $IMAGE:$TAG "$@"
+    --rm \
+    ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} "$@"

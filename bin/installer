@@ -1,0 +1,26 @@
+#!/bin/bash
+set -x
+
+fail() {
+    echo $1 1>&2
+    echo "Usage: $0 [install|uninstall]" 1>&2
+    exit 1
+}
+
+[[ $# -lt 1 ]] && fail "Invalid number of arguments"
+[[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
+[[ $(uname) != Linux ]] && fail "Impossible to prepare another operating system than Linux."
+
+case $1 in
+    install )
+        curl -sLo /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/extract-xiso"
+        chmod +x /usr/local/bin/extract-xiso
+    ;;
+
+    uninstall )
+        rm -f /usr/local/bin/extract-xiso
+    ;;
+
+    * )
+        fail "Argument $1 is invalid."
+esac
