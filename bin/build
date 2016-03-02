@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 cd "`dirname "$0"`/../src"
 
 docker build -t ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} .

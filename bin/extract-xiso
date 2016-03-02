@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 USER=$(/usr/bin/id -nu)
 HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
@@ -6,7 +6,7 @@ PWD=$(/bin/pwd)
 
 docker run \
     -i \
-    -t=$([[ -t 0 ]] && echo "true" || echo "false") \
+    -t=$([ -t 0 ] && echo "true" || echo "false") \
     -u "$USER" \
     -v /etc/group:/etc/group:ro \
     -v /etc/passwd:/etc/passwd:ro \

@@ -14,6 +14,7 @@ RUN set -x \
     # Install packages
 
     && BUILD_DEPS="build-essential curl" \
+
     && apt-get install -y --no-install-recommends \
            $BUILD_DEPS \
 
@@ -29,8 +30,9 @@ RUN set -x \
     && apt-get remove -y --purge \
            $BUILD_DEPS \
     && apt-get autoremove -y --purge \
+
     && rm -rf \
-           /var/lib/apt/lists/* \
-           /tmp/*
+           /tmp/* \
+           /var/lib/apt/lists/*
 
 ENTRYPOINT [ "/usr/bin/extract-xiso" ]

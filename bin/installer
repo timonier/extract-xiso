@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -x
 
 fail() {
@@ -7,9 +7,9 @@ fail() {
     exit 1
 }
 
-[[ $# -lt 1 ]] && fail "Invalid number of arguments"
-[[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
-[[ $(uname) != Linux ]] && fail "Impossible to prepare another operating system than Linux."
+[ $# -lt 1 ] && fail "Invalid number of arguments"
+[ "$EUID" != 0 ] && fail "Impossible to prepare the system without root privileges."
+[ $(uname) != Linux ] && fail "Impossible to prepare another operating system than Linux."
 
 case $1 in
     install )
