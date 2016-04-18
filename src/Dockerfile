@@ -18,7 +18,7 @@ RUN set -x \
     && apt-get install -y --no-install-recommends \
            $BUILD_DEPS \
 
-    # Compile extract-xiso
+    # Install extract-xiso
 
     && curl -sLo /tmp/extract-xiso.tar.gz "http://downloads.sourceforge.net/project/extract-xiso/extract-xiso%20source/extract-xiso-$EXTRACT_XISO_VERSION.tar.gz" \
     && sh -c "cd /tmp && tar xvzf extract-xiso.tar.gz" \

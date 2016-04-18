@@ -1,13 +1,13 @@
 #!/bin/sh
 
-USER=$(/usr/bin/id -nu)
-HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
+UID=$(/usr/bin/id -u)
+HOME=$(/usr/bin/getent passwd $UID | cut -d: -f6)
 PWD=$(/bin/pwd)
 
 docker run \
     -i \
     -t=$([ -t 0 ] && echo "true" || echo "false") \
-    -u "$USER" \
+    -u $UID \
     -v /etc/group:/etc/group:ro \
     -v /etc/passwd:/etc/passwd:ro \
     -v /etc/localtime:/etc/localtime:ro \
