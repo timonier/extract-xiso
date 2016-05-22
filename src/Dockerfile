@@ -2,12 +2,13 @@ FROM debian:jessie
 MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
 
 ENV \
-    DEBIAN_FRONTEND=noninteractive \
     EXTRACT_XISO_VERSION=2.7.1
 
 RUN set -x \
 
     # Prepare system
+
+    && export DEBIAN_FRONTEND=noninteractive \
 
     && apt-get update \
 
