@@ -1,18 +1,15 @@
 #!/bin/sh
 
-UID=$(/usr/bin/id -u)
-HOME=$(/usr/bin/getent passwd $UID | cut -d: -f6)
-PWD=$(/bin/pwd)
-
 docker run \
-    -i \
+    $(env | cut -d= -f1 | awk '{print "-e", $1}') \
+    -i=$([ -t 0 ] && echo "true" || echo "false") \
     -t=$([ -t 0 ] && echo "true" || echo "false") \
-    -u $UID \
     -v /etc/group:/etc/group:ro \
-    -v /etc/passwd:/etc/passwd:ro \
     -v /etc/localtime:/etc/localtime:ro \
-    -v "$HOME:$HOME" \
-    -v "$PWD:$PWD" \
-    -w "$PWD" \
+    -v /etc/passwd:/etc/passwd:ro \
+    -v /etc/timezone:/etc/timezone:ro \
+    -v "${HOME}:${HOME}" \
+    -v "${PWD}:${PWD}" \
+    -w "${PWD}" \
     --rm \
-    ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} "$@"
+    ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} extract-xiso "$@"

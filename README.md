@@ -1,5 +1,7 @@
 # README
 
+The Xbox iso extractor tool
+
 ## Installation
 
 Copy the file `bin/extract-xiso` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
@@ -47,3 +49,4 @@ __Note__: Use the script `bin/build` to test your modifications locally.
 
 * [extract-xiso](https://sourceforge.net/projects/extract-xiso/)
 * [image "timonier/extract-xiso"](https://hub.docker.com/r/timonier/extract-xiso/)
+* [timonier/dumb-entrypoint](https://github.com/timonier/dumb-entrypoint)

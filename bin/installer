@@ -7,9 +7,17 @@ fail() {
     exit 1
 }
 
-[ $# -lt 1 ] && fail "Invalid number of arguments"
-[ $(id -u) != 0 ] && fail "Impossible to prepare the system without root privileges."
-[ $(uname) != Linux ] && fail "Impossible to prepare another operating system than Linux."
+if [ $# -lt 1 ] ; then
+    fail "Invalid number of arguments."
+fi
+
+if [ $(id -u) -ne 0 ] ; then
+    fail "Impossible to prepare the system without root privileges."
+fi
+
+if [ $(uname) != "Linux" ] ; then
+    fail "Impossible to prepare another operating system than Linux."
+fi
 
 case $1 in
     install )
