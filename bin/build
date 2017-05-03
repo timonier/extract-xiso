@@ -1,4 +1,5 @@
 #!/bin/sh
-cd "`dirname "$0"`/../src"
+set -eux
+cd "$(dirname "$0")/../src"
 
-docker build -t ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} .
+docker build --tag "${IMAGE:-timonier/extract-xiso}:${TAG:-latest}" .

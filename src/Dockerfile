@@ -1,12 +1,12 @@
-FROM debian:jessie-slim
+FROM ubuntu:latest
 
 LABEL \
     maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
 
 ENV \
-    EXTRACT_XISO_VERSION=2.7.1
+    EXTRACT_XISO_VERSION=latest
 
-RUN set -x \
+RUN set -eux \
 
     # Prepare system
 
@@ -16,29 +16,30 @@ RUN set -x \
 
     # Install packages
 
-    && BUILD_DEPS="build-essential ca-certificates curl" \
+    && export BUILD_DEPS="build-essential ca-certificates curl" \
 
-    && apt-get install -y --no-install-recommends \
+    && apt-get install --no-install-recommends --yes \
            ${BUILD_DEPS} \
+
+    # Install dumb-entrypoint
+
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
 
     # Install extract-xiso
 
-    && curl -sLo /tmp/extract-xiso.tar.gz "http://downloads.sourceforge.net/project/extract-xiso/extract-xiso%20source/extract-xiso-${EXTRACT_XISO_VERSION}.tar.gz" \
-    && sh -c "cd /tmp && tar xvzf extract-xiso.tar.gz" \
-    && make -C /tmp/extract-xiso \
+    && export $(curl "https://raw.githubusercontent.com/timonier/version-lister/release/generated/extract-xiso/${EXTRACT_XISO_VERSION}" | xargs) \
+
+    && curl --location "http://downloads.sourceforge.net/project/extract-xiso/extract-xiso%20source/extract-xiso-${EXTRACT_XISO_VERSION}.tar.gz" | tar --directory /tmp --extract --gzip \
+    && make --directory /tmp/extract-xiso \
     && mv /tmp/extract-xiso/extract-xiso /usr/bin/extract-xiso \
-
-    # Install timonier/dumb-entrypoint
-
-    && curl -sL "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
 
     # Clean
 
-    && apt-get remove -y --purge \
+    && apt-get remove --purge --yes \
            ${BUILD_DEPS} \
-    && apt-get autoremove -y --purge \
+    && apt-get autoremove --purge --yes \
 
-    && rm -rf \
+    && rm --force --recursive \
            /tmp/* \
            /var/lib/apt/lists/*
 

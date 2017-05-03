@@ -1,34 +1,38 @@
 #!/bin/sh
-set -x
+set -eux
+
+# Check environment
 
 fail() {
-    echo $1 1>&2
-    echo "Usage: $0 [install|uninstall]" 1>&2
+    echo "$1" 1>&2
+    echo "Usage: $(basename "$0") [install|uninstall]" 1>&2
     exit 1
 }
 
-if [ $# -lt 1 ] ; then
+if [ "$#" -lt 1 ] ; then
     fail "Invalid number of arguments."
 fi
 
-if [ $(id -u) -ne 0 ] ; then
+if [ "$(id --user)" -ne 0 ] ; then
     fail "Impossible to prepare the system without root privileges."
 fi
 
-if [ $(uname) != "Linux" ] ; then
+if [ "$(uname)" != "Linux" ] ; then
     fail "Impossible to prepare another operating system than Linux."
 fi
 
-case $1 in
+# Run installer
+
+case "$1" in
     install )
-        curl -sLo /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/extract-xiso"
+        curl --location --output /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/extract-xiso"
         chmod +x /usr/local/bin/extract-xiso
     ;;
 
     uninstall )
-        rm -f /usr/local/bin/extract-xiso
+        rm --force /usr/local/bin/extract-xiso
     ;;
 
     * )
-        fail "Argument $1 is invalid."
+        fail "Argument \"$1\" is invalid."
 esac

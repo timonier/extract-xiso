@@ -1,15 +1,16 @@
 #!/bin/sh
 
 docker run \
-    $(env | cut -d= -f1 | awk '{print "-e", $1}') \
-    -i=$([ -t 0 ] && echo "true" || echo "false") \
-    -t=$([ -t 0 ] && echo "true" || echo "false") \
-    -v /etc/group:/etc/group:ro \
-    -v /etc/localtime:/etc/localtime:ro \
-    -v /etc/passwd:/etc/passwd:ro \
-    -v /etc/timezone:/etc/timezone:ro \
-    -v "${HOME}:${HOME}" \
-    -v "${PWD}:${PWD}" \
-    -w "${PWD}" \
+    $(env | cut -d= -f1 | awk '{print "--env", $1}') \
+    --interactive="$([ -t 0 ] && echo "true" || echo "false")" \
+    --net host \
     --rm \
-    ${IMAGE:-timonier/extract-xiso}:${TAG:-2.7.1} extract-xiso "$@"
+    --tty="$([ -t 0 ] && echo "true" || echo "false")" \
+    --volume /etc/group:/etc/group:ro \
+    --volume /etc/localtime:/etc/localtime:ro \
+    --volume /etc/passwd:/etc/passwd:ro \
+    --volume /etc/timezone:/etc/timezone:ro \
+    --volume "${HOME}:${HOME}" \
+    --volume "${PWD}:${PWD}" \
+    --workdir "${PWD}" \
+    "${IMAGE:-timonier/extract-xiso}:${TAG:-latest}" extract-xiso "$@"
