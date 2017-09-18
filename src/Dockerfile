@@ -6,7 +6,7 @@ LABEL \
 ENV \
     EXTRACT_XISO_VERSION=latest
 
-RUN set -eux \
+RUN set -ex \
 
     # Prepare system
 
@@ -21,10 +21,6 @@ RUN set -eux \
     && apt-get install --no-install-recommends --yes \
            ${BUILD_DEPS} \
 
-    # Install dumb-entrypoint
-
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
-
     # Install extract-xiso
 
     && export $(curl "https://raw.githubusercontent.com/timonier/version-lister/release/generated/extract-xiso/${EXTRACT_XISO_VERSION}" | xargs) \
@@ -32,6 +28,12 @@ RUN set -eux \
     && curl --location "http://downloads.sourceforge.net/project/extract-xiso/extract-xiso%20source/extract-xiso-${EXTRACT_XISO_VERSION}.tar.gz" | tar --directory /tmp --extract --gzip \
     && make --directory /tmp/extract-xiso \
     && mv /tmp/extract-xiso/extract-xiso /usr/bin/extract-xiso \
+
+    # Install timonier/dumb-entrypoint
+
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-init/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
 
     # Clean
 

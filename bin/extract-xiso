@@ -1,8 +1,15 @@
 #!/bin/sh
+set -e
+
+# Check environment
+
+export PATH=$(echo "${PATH}:/usr/sbin" | awk -v RS=":" -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+
+# Run command
 
 docker run \
     $(env | cut -d= -f1 | awk '{print "--env", $1}') \
-    --interactive="$([ -t 0 ] && echo "true" || echo "false")" \
+    --interactive \
     --net host \
     --rm \
     --tty="$([ -t 0 ] && echo "true" || echo "false")" \

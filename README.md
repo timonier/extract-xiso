@@ -14,7 +14,7 @@ sudo chmod +x /usr/local/bin/extract-xiso
 Linux users can use the [installer](https://github.com/timonier/extract-xiso/blob/master/bin/installer):
 
 ```sh
-curl --location "https://github.com/timonier/extract-xiso/raw/master/bin/installer" | sudo sh -s install
+curl --location "https://github.com/timonier/extract-xiso/raw/master/bin/installer" | sudo sh -s -- install
 ```
 
 ## Usage

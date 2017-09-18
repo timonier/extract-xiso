@@ -1,11 +1,11 @@
 #!/bin/sh
-set -eux
+set -ex
 
 # Check environment
 
 fail() {
-    echo "$1" 1>&2
-    echo "Usage: $(basename "$0") [install|uninstall]" 1>&2
+    echo 1>&2 "$1"
+    echo 1>&2 "Usage: $(basename "$0") [install|uninstall]"
     exit 1
 }
 
