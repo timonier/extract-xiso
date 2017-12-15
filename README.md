@@ -4,13 +4,6 @@ The Xbox iso extractor tool
 
 ## Installation
 
-Copy `bin/extract-xiso` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
-
-```sh
-sudo curl --location --output /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/extract-xiso"
-sudo chmod +x /usr/local/bin/extract-xiso
-```
-
 Linux users can use the [installer](https://github.com/timonier/extract-xiso/blob/master/bin/installer):
 
 ```sh

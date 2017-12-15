@@ -1,0 +1,4 @@
+/bin/*
+!bin/build
+!bin/cmd
+!bin/installer

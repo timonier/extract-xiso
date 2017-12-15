@@ -20,4 +20,4 @@ docker run \
     --volume "${HOME}:${HOME}" \
     --volume "${PWD}:${PWD}" \
     --workdir "${PWD}" \
-    "${IMAGE:-timonier/extract-xiso}:${TAG:-latest}" extract-xiso "$@"
+    "${IMAGE:-timonier/extract-xiso}:${TAG:-latest}" "$(basename "$0")" "$@"

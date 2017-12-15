@@ -25,7 +25,7 @@ fi
 
 case "$1" in
     install )
-        curl --location --output /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/extract-xiso"
+        curl --location --output /usr/local/bin/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/cmd"
         chmod +x /usr/local/bin/extract-xiso
     ;;
 
