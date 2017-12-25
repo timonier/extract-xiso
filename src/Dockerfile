@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:stable-slim
 
 LABEL \
     maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
@@ -15,9 +15,10 @@ RUN set -ex \
 \
     # Install packages
 \
-    && export BUILD_DEPS="build-essential ca-certificates curl" \
+    && export BUILD_DEPS="build-essential curl" \
     && apt-get install --no-install-recommends --yes \
            ${BUILD_DEPS} \
+           ca-certificates \
 \
     # Install extract-xiso
 \
