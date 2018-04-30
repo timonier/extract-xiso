@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # Check environment
 
-export PATH=$(echo "${PATH}:/usr/sbin" | awk -v RS=":" -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+export PATH=$(echo "${PATH}:/usr/sbin:/sbin:/bin" | awk -v RS=":" -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
 
 # Run command
 
 docker run \
-    $(env | cut -d= -f1 | awk '{print "--env", $1}') \
+    $(compgen -A variable | awk '{print "--env", $1}') \
     --init \
     --interactive \
     --net host \
