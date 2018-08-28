@@ -1,24 +1,4 @@
 #!/bin/bash
-set -e
+set -e -u
 
-# Check environment
-
-export PATH=$(echo "${PATH}:/usr/sbin:/sbin:/bin" | awk -v RS=":" -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
-
-# Run command
-
-docker run \
-    $(compgen -A variable | awk '{print "--env", $1}') \
-    --init \
-    --interactive \
-    --net host \
-    --rm \
-    --tty="$([ -t 0 ] && echo "true" || echo "false")" \
-    --volume /etc/group:/etc/group:ro \
-    --volume /etc/localtime:/etc/localtime:ro \
-    --volume /etc/passwd:/etc/passwd:ro \
-    --volume /etc/timezone:/etc/timezone:ro \
-    --volume "${HOME}:${HOME}" \
-    --volume "${PWD}:${PWD}" \
-    --workdir "${PWD}" \
-    "${IMAGE:-timonier/extract-xiso}:${TAG:-latest}" "$(basename "$0")" "$@"
+docker run $(compgen -A variable | grep -v "PATH" | awk "{print \"--env\", \$1}") --init --interactive --net host --rm --tty="$([ -t 0 ] && echo "true" || echo "false")" --volume /etc/group:/etc/group:ro --volume /etc/localtime:/etc/localtime:ro --volume /etc/passwd:/etc/passwd:ro --volume /etc/timezone:/etc/timezone:ro --volume "${HOME}":"${HOME}" --volume "${PWD}":"${PWD}" --workdir "${PWD}" "${IMAGE:-timonier/extract-xiso}":"${TAG:-latest}" "$(basename "$0")" "$@"

@@ -3,10 +3,7 @@ FROM debian:stable-slim
 LABEL \
     maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
 
-ENV \
-    EXTRACT_XISO_VERSION=latest
-
-RUN set -ex \
+RUN set -e -u -x \
 \
     # Prepare system
 \
@@ -15,30 +12,25 @@ RUN set -ex \
 \
     # Install packages
 \
-    && export BUILD_DEPS="build-essential curl" \
-    && apt-get install --no-install-recommends --yes \
-           ${BUILD_DEPS} \
-           ca-certificates \
+    && BUILD_DEPS="build-essential curl" \
+    && apt-get install --no-install-recommends --yes ${BUILD_DEPS} ca-certificates locales \
+\
+    # Install dumb-entrypoint
+\
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | sh -s -- install \
 \
     # Install extract-xiso
 \
-    && export $(curl --location "https://github.com/timonier/version-lister/raw/generated/_/extract-xiso/${EXTRACT_XISO_VERSION}" | xargs) \
-    && curl --location "http://downloads.sourceforge.net/project/extract-xiso/extract-xiso%20source/extract-xiso-${EXTRACT_XISO_VERSION}.tar.gz" | tar --directory /tmp --extract --gzip \
+    && export $(curl --location "https://github.com/timonier/version-lister/raw/generated/_/extract-xiso/latest" | xargs) \
+    && curl --location "${EXTRACT_XISO_SOURCE}" | tar --directory /tmp --extract --gzip \
     && make --directory /tmp/extract-xiso \
-    && mv /tmp/extract-xiso/extract-xiso /usr/bin/extract-xiso \
-\
-    # Install timonier/dumb-entrypoint
-\
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
+    && mv /tmp/extract-xiso/extract-xiso /usr/local/bin/extract-xiso \
 \
     # Clean
 \
-    && apt-get remove --purge --yes \
-           ${BUILD_DEPS} \
+    && apt-get remove --purge --yes ${BUILD_DEPS} \
     && apt-get autoremove --purge --yes \
-    && rm --force --recursive \
-           /tmp/* \
-           /var/lib/apt/lists/*
+    && rm -f -r /tmp/* /var/lib/apt/lists/*
 
 ENTRYPOINT [ "dumb-entrypoint" ]
