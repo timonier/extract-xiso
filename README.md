@@ -4,8 +4,6 @@ The Xbox iso extractor tool
 
 ## Installation
 
-Linux users can use the [installer](https://github.com/timonier/extract-xiso/blob/master/bin/installer):
-
 ```sh
 # Define installation folder
 
