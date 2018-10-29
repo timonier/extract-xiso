@@ -4,14 +4,14 @@ cd "$(dirname "$0")"
 
 # Check environment
 
-fail() {
+_fail() {
     echo 1>&2 "$1"
     echo 1>&2 "Usage: $(basename "$0") [install|uninstall]"
     exit 255
 }
 
 if [ "$#" -lt 1 ]; then
-    fail "Invalid number of arguments."
+    _fail "Invalid number of arguments."
 fi
 
 # Run installer
@@ -23,7 +23,7 @@ case "$1" in
         mkdir -p "${INSTALL_DIRECTORY}"
 
         if [ -t 0 ]; then
-            cp "${PWD}"/cmd "${INSTALL_DIRECTORY}"/extract-xiso
+            cp cmd "${INSTALL_DIRECTORY}"/extract-xiso
         else
             curl --location --output "${INSTALL_DIRECTORY}"/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/cmd"
         fi
@@ -36,6 +36,6 @@ case "$1" in
         ;;
 
     *)
-        fail "Argument \"$1\" is invalid."
+        _fail "Argument \"$1\" is invalid."
         ;;
 esac
