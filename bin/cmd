@@ -7,7 +7,7 @@ _fail() {
 }
 
 if [ "$(uname)" == "Darwin" ]; then
-    exec docker run $(compgen -A variable | grep -E -v "^(HOME|JAVA_HOME|LOGNAME|OLDPWD|PATH|SHELL|TMPDIR|USER)$" | awk "{print \"--env\", \$1}") --init --interactive --net host --rm --tty="$([ -t 0 ] && echo "true" || echo "false")" --volume "${HOME}":/root --volume "${HOME}":"${HOME}" --workdir "${PWD}" "${IMAGE:-timonier/extract-xiso}":"${TAG:-latest}" "$(basename "$0")" "$@"
+    exec docker run $(compgen -A variable | grep -E -v "^(HOME|JAVA_HOME|LOGNAME|OLDPWD|PATH|SHELL|TMPDIR|USER)$" | awk "{print \"--env\", \$1}") --init --interactive --mount "dst=${HOME},src=timonier-extract-xiso-home,type=volume,volume-driver=local,volume-opt=device=:${HOME},volume-opt=type=nfs,\"volume-opt=o=addr=host.docker.internal,hard,nfsvers=3,nointr,nolock,rw\"" --mount "dst=/root,src=timonier-extract-xiso-root,type=volume,volume-driver=local,volume-opt=device=:${HOME},volume-opt=type=nfs,\"volume-opt=o=addr=host.docker.internal,hard,nfsvers=3,nointr,nolock,rw\"" --net host --rm --tty="$([ -t 0 ] && echo "true" || echo "false")" --workdir "${PWD}" "${IMAGE:-timonier/extract-xiso}":"${TAG:-latest}" "$(basename "$0")" "$@"
 fi
 
 if [ "$(uname)" == "Linux" ]; then
