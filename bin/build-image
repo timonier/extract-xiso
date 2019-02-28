@@ -1,5 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 set -e -u -x
 cd "$(dirname "$0")"/../src
 
-docker build --tag "${IMAGE:-timonier/extract-xiso}":"${TAG:-latest}" .
+docker build --pull --tag "${IMAGE:-timonier/extract-xiso}":"${TAG:-latest}" .
