@@ -17,8 +17,8 @@ RUN set -e -u -x \
 \
     # Install dumb-entrypoint
 \
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | sh -s -- install \
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | bash -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | bash -s -- install \
 \
     # Install extract-xiso
 \
