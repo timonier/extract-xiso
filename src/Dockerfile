@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 
 LABEL \
-    maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
+    maintainer="Morgan AUCHEDE <morgan.auchede@gmail.com>"
 
 RUN set -e -u -x \
 \
@@ -17,12 +17,12 @@ RUN set -e -u -x \
 \
     # Install dumb-entrypoint
 \
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | bash -s -- install \
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | bash -s -- install \
+    && curl --location "https://gitlab.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | bash -s -- install \
+    && curl --location "https://gitlab.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | bash -s -- install \
 \
     # Install extract-xiso
 \
-    && export $(curl --location "https://github.com/timonier/version-lister/raw/generated/_/extract-xiso/latest" | xargs) \
+    && export $(curl --location "https://gitlab.com/timonier/version-lister/raw/generated/_/extract-xiso/latest" | xargs) \
     && curl --location "${EXTRACT_XISO_SOURCE}" | tar --directory /tmp --extract --gzip \
     && make --directory /tmp/extract-xiso \
     && mv /tmp/extract-xiso/extract-xiso /usr/local/bin/extract-xiso \
