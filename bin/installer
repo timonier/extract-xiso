@@ -25,7 +25,7 @@ case "$1" in
         if [ -t 0 ]; then
             cp cmd "${INSTALL_DIRECTORY}"/extract-xiso
         else
-            curl --location --output "${INSTALL_DIRECTORY}"/extract-xiso "https://gitlab.com/timonier/extract-xiso/raw/master/bin/cmd"
+            curl --location --output "${INSTALL_DIRECTORY}"/extract-xiso "https://github.com/timonier/extract-xiso/raw/master/bin/cmd"
         fi
 
         chmod +x "${INSTALL_DIRECTORY}"/extract-xiso

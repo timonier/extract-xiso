@@ -1,0 +1,35 @@
+name: 'CI / CD'
+
+on:
+    pull_request:
+    push:
+    schedule:
+        - cron:  '0 1 * * *'
+
+jobs:
+
+    default:
+        env:
+            GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        runs-on: 'ubuntu-latest'
+        steps:
+            - uses: 'actions/checkout@v1'
+            - name: '[CI] Build Docker image'
+              run: |
+                  set -e -u -x
+                  docker build --tag timonier/extract-xiso:"${GITHUB_SHA}" src
+            - name: '[CI] Test extract-xiso'
+              run: |
+                  set -e -u -x
+                  docker run --rm timonier/extract-xiso:"${GITHUB_SHA}" extract-xiso -h
+            - name: '[CD] Build Docker image'
+              if: 'github.event_name == ''push'' && github.ref == ''refs/heads/master'' && github.repository == ''timonier/extract-xiso'''
+              run: |
+                  set -e -u -x
+                  docker build --tag timonier/extract-xiso:latest src
+            - name: '[CD] Push Docker image'
+              if: 'github.event_name == ''push'' && github.ref == ''refs/heads/master'' && github.repository == ''timonier/extract-xiso'''
+              run: |
+                  set -e -u -x
+                  echo '${{ secrets.DOCKER_HUB_PASSWORD }}' | docker login --username '${{ secrets.DOCKER_HUB_USERNAME }}' --password-stdin
+                  docker push timonier/extract-xiso:latest

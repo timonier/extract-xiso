@@ -3,6 +3,9 @@ FROM debian:stable-slim
 LABEL \
     maintainer="Morgan AUCHEDE <morgan.auchede@gmail.com>"
 
+ENV \
+    LC_ALL=C.UTF-8
+
 RUN set -e -u -x \
 \
     # Prepare system
@@ -15,15 +18,9 @@ RUN set -e -u -x \
     && BUILD_DEPS="build-essential curl" \
     && apt-get install --no-install-recommends --yes ${BUILD_DEPS} ca-certificates locales \
 \
-    # Install dumb-entrypoint
-\
-    && curl --location "https://gitlab.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | bash -s -- install \
-    && curl --location "https://gitlab.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | bash -s -- install \
-\
     # Install extract-xiso
 \
-    && export $(curl --location "https://gitlab.com/timonier/version-lister/raw/generated/_/extract-xiso/latest" | xargs) \
-    && curl --location "${EXTRACT_XISO_SOURCE}" | tar --directory /tmp --extract --gzip \
+    && curl --location "https://sourceforge.net/projects/extract-xiso/files/extract-xiso%20source/extract-xiso-2.7.1.tar.gz/download" | tar --directory /tmp --extract --gzip \
     && make --directory /tmp/extract-xiso \
     && mv /tmp/extract-xiso/extract-xiso /usr/local/bin/extract-xiso \
 \
@@ -32,5 +29,3 @@ RUN set -e -u -x \
     && apt-get remove --purge --yes ${BUILD_DEPS} \
     && apt-get autoremove --purge --yes \
     && rm -f -r /tmp/* /var/lib/apt/lists/*
-
-ENTRYPOINT [ "dumb-entrypoint" ]
